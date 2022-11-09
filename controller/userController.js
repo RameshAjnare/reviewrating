@@ -1,6 +1,8 @@
+const { error } = require("@hapi/joi/lib/base");
 const bcrypt = require("bcrypt");
 const User = require("../model/user_schema");
 const userSchema = require("../model/user_schema")
+const {transporter,mailOptions}=require('../service/serviceMail')
 
 const userSignup = async function(req,res){
 
@@ -49,5 +51,18 @@ const userSignup = async function(req,res){
   
       }
    }
+
+   const sendMail = async(req,res)=>{
+           transporter.sendMail(mailOptions,(error,info)=>{
+
+          if(error){
+                 console.log(error)
+          
+                  }else{
+              console.log("Email Sent Successfully"+info.response);
+    }
+})
+ 
+   }
   
-   module.exports = { userSignup }
+   module.exports = { userSignup , sendMail }

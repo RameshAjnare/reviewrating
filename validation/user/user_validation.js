@@ -1,4 +1,5 @@
 const user = require('./user_schema')
+
 module.exports = {
 
     registerUserValidation : async (req,res,next) =>{
