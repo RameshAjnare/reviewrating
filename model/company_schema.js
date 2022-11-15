@@ -2,7 +2,6 @@ const mongoose= require('mongoose')
 
 const companySchema = new mongoose.Schema({
   companyName:{
-
     type:String,
     require:true
   },
@@ -20,20 +19,18 @@ const companySchema = new mongoose.Schema({
     type:String,
     require:true
   },
-  profilepic : String,
-
   isActive:{
-
     type: Boolean,
     default:true
   },
-
   userId: {
-  
-    type:mongoose.Schema.Types.ObjectId,
-    require:true,
-    ref: 'user'
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'users'
 
+  },
+  company_logo : {
+    type:String,
   }
 
 })

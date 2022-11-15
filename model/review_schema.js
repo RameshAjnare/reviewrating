@@ -1,14 +1,10 @@
 const { default: mongoose, model } = require("mongoose");
 
-
-
 const reviewSchema= new mongoose.Schema({
-
     subject:{
         type:String,
         require:true
-      },
-      
+      },     
       review:{
         type:String,
         require:true
@@ -22,18 +18,14 @@ const reviewSchema= new mongoose.Schema({
         type: Boolean,
         default:true
       },
-
-
 company_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'company'
 },
-
 user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'users'
 }
-
 })
 
 userSchema.set('timestamps',true)

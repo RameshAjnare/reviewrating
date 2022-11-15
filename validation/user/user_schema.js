@@ -11,6 +11,12 @@ const schema = {
        city: joi.string().required(),
        state: joi.string().required()
     }).unknown(true),
+
+//Here we added login schema...
+    loginUser :joi.object({
+        email : joi.string().email().required(),
+        password : joi.string().required(),
+    }).unknown(true)
 }
 
 module.exports = schema
