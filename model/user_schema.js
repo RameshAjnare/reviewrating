@@ -26,9 +26,7 @@ const userSchema = new mongoose.Schema({
     type:String,
     require:true
   },
-
-//  profilepic : String,
-
+  profilepic : String,
   isActive:{
 
     type: Boolean,

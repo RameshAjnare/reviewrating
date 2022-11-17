@@ -2,12 +2,11 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const { config } = require("dotenv");
 const User = require("../model/user_schema");
-const userSchema = require("../model/user_schema")
 const { transporter, mailOptions } = require('../service/serviceMail');
-
 
 const userSignup = async function (req, res) {
     const { email, password } = req.body;
+     console.log("===>",email,password)
     const userData = new User(req.body)
     console.log("====>", userData);
     try {
@@ -21,11 +20,16 @@ const userSignup = async function (req, res) {
         }
         const salt = await bcrypt.genSalt(10);
         userData.password = await bcrypt.hash(password, salt);
-
+        const filePath =`/uploads/${req.file.filename}`;
+        userData.profilepic = filePath
         const addRes = await userData.save()
-        console.log('after try',);
+        return res.status(200).json({
+            success: 200,
+            massage: "Registation Success",
+            token:token
+        });
     } catch (err) {
-        res.send('Error')
+        res.send('Error',err)
         console.log(err)
     }
 }
@@ -56,10 +60,10 @@ const userLogin = async (req, res) => {
                     return res.status(200).json({
                         success: 200,
                         massage: "Login Success",
-                        token:token
+                        token: token
                     });
                 } else {
-                    res.send({ status: "failed", massage: "token is mismatch" })
+                    res.send({ status: "failed", massage: "Password is not match" })
                 }
             }else{
                 res.send({ status: "failed", massage: "email user is not found" }) 
@@ -79,7 +83,7 @@ const sendUserRestPasswordEmail = async (req,res) => {
        if(userData != null){
         const secret = userData._id + process.env.JWT_SECRET_KEY
         const token = jwt.sign({userID : userData._id},secret,{
-            expiresIn : '40m'
+            expiresIn : '5d'
         })
         const link = `http://127.0.0.1:3000/api/user/reset/${userData._id}/${token}`
         let info = await transporter.sendMail({
@@ -117,8 +121,8 @@ const  userPasswordRest = async (req,res) => {
             console.log("=====");*/
             if(newPassword === confirmPassword){
             const salt = await bcrypt.genSalt(10);
-            checkUser.password = await bcrypt.hash(password, salt);
-            checkUser.updateOne({ password: confirmPassword })
+            checkUser.password = await bcrypt.hash(confirmPassword, salt);
+            await User.findByIdAndUpdate(checkUser._id, {$set: {password: confirmPassword}})
             res.send({ status: "Success", massage: "Password update Successfully"})
             }else{
                 res.send({ status: "failed", massage: "Password and confirmPassword is not match" })
@@ -126,10 +130,9 @@ const  userPasswordRest = async (req,res) => {
          }else{
             res.send({ status: "failed", massage: "email user is not found" })
          }
-         console.log(userDetails);
+         console.log("password change=====>",userDetails);
     }catch(error){
         res.send(error)
-
     }
 }
 module.exports = { userSignup, userLogin, 

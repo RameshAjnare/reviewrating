@@ -2,31 +2,30 @@ const { default: mongoose, model } = require("mongoose");
 
 const reviewSchema= new mongoose.Schema({
     subject:{
-        type:String,
-        require:true
+        type : String,
+        require : true
       },     
       review:{
-        type:String,
-        require:true
+        type : String,
+        require : true
       },
       rating:{
-        type:String,
-        require:true
+        type : Number,
+        require : true
       },
       isActive:{
-    
-        type: Boolean,
-        default:true
+        type : Boolean,
+        default : true
       },
 company_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'company'
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'company'
 },
 user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'users'
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'users'
 }
 })
 
-userSchema.set('timestamps',true)
+reviewSchema.set('timestamps',true)
 module.exports=model('review',reviewSchema);

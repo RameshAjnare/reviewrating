@@ -10,7 +10,6 @@ const companySchema = new mongoose.Schema({
     require: true,
     default: false
   },
-  
   city:{
     type:String,
     require:true
@@ -27,12 +26,10 @@ const companySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'users'
-
   },
   company_logo : {
     type:String,
   }
-
 })
 companySchema.set('timestamps',true)
 
