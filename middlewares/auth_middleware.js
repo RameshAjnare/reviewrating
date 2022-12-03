@@ -17,7 +17,7 @@ if(authorization && authorization.startsWith("Bearer")){
         next()
     }catch(err){
       console.log(err);
-      res.status(401).send({ status:"failed", message:"Unauthorized User"});
+      res.status(401).send({ status:"failed", message:"Unauthorized User"+ err.message});
     }
 }
 if(!token){

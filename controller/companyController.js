@@ -14,20 +14,20 @@ if(companySchema)
          const companyExists = await Company.findOne({ companyName: companyName })
         if (companyExists) {
             return res.status(400).json({
-                status: 400,
-                error: "This Company Name already exists"
+                status : 400,
+                error : "This Company Name already exists"
             });
         }
          const filePath =`/uploads/${req.file.filename}`;
          companySchema.company_logo = filePath
          const resultCompany = await companySchema.save();
-          res.send({ status : "Success", massage: "Company data save successfully"})
+          res.send({ status : "Success", massage : "Company data save successfully"})
       }else{
-         res.send({ status : "failed", massage: "Company data is Null" })
+         res.send({ status : "failed", massage : "Company data is Null" })
       } 
    }catch(error){
       console.log(error)
-      res.send({ status: "failed",error })
+      res.send({ status : "failed",message : error.message})
    }
 }
 
@@ -41,12 +41,12 @@ console.log('=====>',req.body)
       message : "Review Data insert Successfully",
    }) 
    }catch(err){
-      res.send({ status: "failed",massage:err})
+      res.send({ status : "failed", massage:err})
    }
 }
 
 
-const companyList = async (req,res) => {
+const companyList = async (req, res) => {
    console.log('=====>')
       try{
       const companyList =await Company.find({}); 
@@ -56,22 +56,22 @@ const companyList = async (req,res) => {
          console.log(`${key}: ${companyList[key].companyName}`);
      }
        return res.status(200).json({
-         status:"success",
-         count: totalCompany,
-         message: companyList
+         status : "success",
+         count : totalCompany,
+         message : companyList
       }) 
       }catch(err){
-         res.send({ status: "failed",massage:err})
+         res.send({ status : "failed",massage : err})
       }
    }
 
   const comapnyReviewComment = async (req,res) =>{
    let id = req.params.id;
-   console.log("==>",id);
+   console.log("companyId====>",id);
    try{
       const companyDetails = await Company.findById(id).lean(); 
       console.log("companyDetails=>",companyDetails)
-      const comment = await ReviewAndRating.find({'company_id': `${id}`})
+      const comment = await ReviewAndRating.find({'company_id' : `${id}`})
       .populate({
         path : 'user_id', select : 'name profilepic'
       }).populate({
@@ -82,16 +82,16 @@ const companyList = async (req,res) => {
          console.log(`${key}: ${companyDetails.companyName}`);
      }
   const commenstAndCompanyName= {
-    'companyName':companyDetails.companyName,
-    'comment':comment
+    'companyName' : companyDetails,
+    'comment' : comment
   }
        return res.status(200).json({
-         status:"success",
-         message: commenstAndCompanyName,
+         status : "success",
+         message : commenstAndCompanyName,
 
       })
    }catch(error){
-      res.send({ status: "failed",Error:error.message}) 
+      res.send({ status : "failed",Error:error.message}) 
    }
   } 
    
